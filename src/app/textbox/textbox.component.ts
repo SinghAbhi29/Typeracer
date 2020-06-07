@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { $ } from "protractor";
-
+import { ApicallService } from "../apicall.service";
 @Component({
   selector: "app-textbox",
   templateUrl: "./textbox.component.html",
@@ -8,18 +8,6 @@ import { $ } from "protractor";
 })
 export class TextboxComponent implements OnInit {
   beginDisplay = "Good Luck!!";
-  wordList: string[] = [
-    "Apple",
-    "Orange",
-    "Banana",
-    "Papaya",
-    "Fig",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-  ];
   textValue: string = "";
   show: boolean = true;
   wordShow: boolean = false;
@@ -27,8 +15,14 @@ export class TextboxComponent implements OnInit {
   count = 0;
   timeLeft: number = 30;
   interval;
-  constructor() {}
-  ngOnInit() {}
+  words;
+  constructor(private apiservice: ApicallService) {}
+  ngOnInit() {
+    this.apiservice.getWords().subscribe((data) => {
+      this.words = data;
+      console.log(this.words);
+    });
+  }
   initialize() {
     this.count = 0;
     this.timeLeft = 30;
@@ -42,11 +36,11 @@ export class TextboxComponent implements OnInit {
   }
   sendMessage() {
     if (this.textValue == "Go") this.initialize();
-    if (this.word == this.textValue) {
+    if (this.word == this.textValue && this.timeLeft > 0) {
       this.count = this.count + 1;
       this.timeLeft = this.timeLeft + 2;
     }
-    this.word = this.wordList[this.getRandomNumberBetween(0, 9)];
+    this.word = this.words[this.getRandomNumberBetween(0, 149)];
     this.textValue = "";
   }
   startTimer() {
