@@ -1,1 +1,20 @@
-<h3>{{ beginDisplay }}</h3>
+<h2>{{ beginDisplay }}</h2>
+<div *ngIf="wordShow; else ShowStart">
+  <h4>Type: {{ word }}</h4>
+</div>
+<ng-template #ShowStart>
+  <h4>Type 'Go' to start...</h4>
+</ng-template>
+<textarea
+  [(ngModel)]="textValue"
+  (keydown.enter)="sendMessage(); (false)"
+></textarea>
+<h4>Your Score: {{ count }}</h4>
+<div *ngIf="show; else notShow">
+  <p>{{ timeLeft }} Seconds Left....</p>
+</div>
+<ng-template #notShow>
+  <p>
+    Time's Up!!
+  </p>
+</ng-template>
